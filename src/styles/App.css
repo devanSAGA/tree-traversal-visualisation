@@ -1,0 +1,23 @@
+.node circle {
+  fill: white;
+  stroke: #112d4e;
+}
+
+.node text {
+  fill: #112d4e;
+}
+
+path.link {
+  fill: none;
+  stroke: #112d4e;
+}
+
+.app {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
