@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import TreeDiagram from "./components/TreeDiagram";
+import TransitionedList from "./components/TransitionedList";
 
 import Dropdown from "./components/util/Dropdown";
 import Tree from "./components/util/Tree";
@@ -14,6 +15,7 @@ class App extends Component {
     this.state = {
       selectedTraversal: "Select Traversal",
       traversalOrder: [], //it stores the expected sequence of node from tree structure
+      list: [], //store the nodes which got displayed on list/hightlighted on tree one by one
       dropdownOptions: [
         {
           id: 0,
@@ -79,6 +81,50 @@ class App extends Component {
     this.tree.add("7", "right", "5");
   }
 
+  /*This menthod will display order of traversal one by one in delayed manner the "if condition" makes sure that
+  if user interrupts the traversal and selectes the new one before the old one gets completed the effect of old traversal
+  completely nullifies before new gets started*/
+
+  displayList = index => {
+    if (
+      index <= this.state.list.length &&
+      index < this.state.traversalOrder.length
+    ) {
+      let tempList = [...this.state.list, this.state.traversalOrder[index]];
+      this.setState({ list: tempList });
+      setTimeout(() => {
+        this.displayList(index + 1);
+        this.animateTree(this.state.traversalOrder[index + 1]);
+      }, 1500);
+    }
+  };
+
+  /* as soon as the displayList method is called this method is triggered too to corresponding animate the tree node
+  along with the node which just got displayed on the list*/
+
+  animateTree = value => {
+    let data = this.state.treeData;
+    const nodeList = [this.state.treeData];
+    while (true) {
+      const current = nodeList.shift();
+      if (current) {
+        if (current.name === value) {
+          current.gProps = {
+            className: "traversed-node"
+          };
+          data = { ...data, current };
+          break;
+        }
+        if (current.children) {
+          current.children.forEach(child => nodeList.push(child));
+        }
+      } else {
+        break;
+      }
+    }
+    this.setState({ treeData: data });
+  };
+
   /*This method gets the exepected order of nodes based on the tree as user selects the traversal and updates the state*/
   updateTraversalOrder = () => {
     const { selectedTraversal } = this.state;
@@ -93,7 +139,10 @@ class App extends Component {
     }
 
     const traversalOrder = this.tree.getTraversalOrder();
-    this.setState({ traversalOrder });
+    this.setState({ traversalOrder }, () => {
+      this.displayList(0);
+      this.animateTree(this.state.traversalOrder[0]);
+    });
   };
 
   /*updates the state when user selectes new traversal and resets the tree and displayed list*/
@@ -154,12 +203,22 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <TreeDiagram data={this.state.treeData} />
-        <Dropdown
-          title={this.state.selectedTraversal}
-          handleTraversalChange={this.handleTraversalChange}
-          options={this.state.dropdownOptions}
-        />
+        <section className="left-container">
+          <div className="tree-diagram">
+            <TreeDiagram data={this.state.treeData} />
+          </div>
+          <span className="subtitle">Order of Traversal</span>
+          <div className="transition-list">
+            <TransitionedList list={this.state.list} />
+          </div>
+        </section>
+        <section className="right-container">
+          <Dropdown
+            title={this.state.selectedTraversal}
+            handleTraversalChange={this.handleTraversalChange}
+            options={this.state.dropdownOptions}
+          />
+        </section>
       </div>
     );
   }

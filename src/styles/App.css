@@ -12,6 +12,14 @@ path.link {
   stroke: #112d4e;
 }
 
+.traversed-node {
+  fill: #112d4e;
+}
+
+.traversed-node text {
+  fill: white;
+}
+
 .app {
   display: -webkit-flex;
   display: -ms-flex;
@@ -20,4 +28,51 @@ path.link {
   align-items: center;
   height: 100%;
   width: 100%;
+}
+
+.left-container,
+.right-container {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  height: 100%;
+  width: 50%;
+}
+
+.left-container {
+  flex-direction: column;
+  align-items: center;
+  background-color: #dbe2ef;
+}
+
+.right-container {
+  align-items: center;
+  justify-content: center;
+  background-color: #112d4e;
+}
+
+.tree-diagram,
+.transition-list {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  justify-content: center;
+}
+
+.tree-diagram {
+  height: 60%;
+  align-items: center;
+}
+
+.transition-list {
+  height: 30%;
+  align-items: flex-start;
+}
+
+.subtitle {
+  font-size: 20px;
+  color: #112d4e;
+  width: 100%;
+  text-align: center;
+  padding: 5% 0;
 }
