@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import TreeDiagram from "./components/TreeDiagram";
 import TransitionedList from "./components/TransitionedList";
+import TraversalInfo from "./components/TraversalInfo";
 
 import Dropdown from "./components/util/Dropdown";
 import Tree from "./components/util/Tree";
@@ -87,15 +88,16 @@ class App extends Component {
 
   displayList = index => {
     if (
-      index <= this.state.list.length &&
+      index === this.state.list.length &&
       index < this.state.traversalOrder.length
     ) {
       let tempList = [...this.state.list, this.state.traversalOrder[index]];
-      this.setState({ list: tempList });
-      setTimeout(() => {
-        this.displayList(index + 1);
-        this.animateTree(this.state.traversalOrder[index + 1]);
-      }, 1500);
+      this.setState({ list: tempList }, () => {
+        setTimeout(() => {
+          this.displayList(index + 1);
+          this.animateTree(this.state.traversalOrder[index + 1]);
+        }, 1500);
+      });
     }
   };
 
@@ -150,15 +152,11 @@ class App extends Component {
     let temp = JSON.parse(JSON.stringify(this.state[key]));
     temp.forEach(item => (item.selected = false));
     temp[id].selected = true;
-    this.setState(
-      {
-        [key]: temp,
-        selectedTraversal
-      },
-      () => {
-        this.resetTree();
-      }
-    );
+    this.setState({
+      [key]: temp,
+      selectedTraversal
+    });
+    this.resetTree();
   };
 
   resetTree = () => {
@@ -195,7 +193,7 @@ class App extends Component {
       () => {
         setTimeout(() => {
           this.updateTraversalOrder();
-        }, 1500);
+        }, 1000);
       }
     );
   };
@@ -213,11 +211,16 @@ class App extends Component {
           </div>
         </section>
         <section className="right-container">
-          <Dropdown
-            title={this.state.selectedTraversal}
-            handleTraversalChange={this.handleTraversalChange}
-            options={this.state.dropdownOptions}
-          />
+          <div className="dropdown">
+            <Dropdown
+              title={this.state.selectedTraversal}
+              handleTraversalChange={this.handleTraversalChange}
+              options={this.state.dropdownOptions}
+            />
+          </div>
+          <div className="traversal-info">
+            <TraversalInfo selectedTraversal={this.state.selectedTraversal} />
+          </div>
         </section>
       </div>
     );

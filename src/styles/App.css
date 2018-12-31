@@ -1,5 +1,5 @@
 .node circle {
-  fill: white;
+  fill: #f9f7f7;
   stroke: #112d4e;
 }
 
@@ -17,7 +17,7 @@ path.link {
 }
 
 .traversed-node text {
-  fill: white;
+  fill: #f9f7f7;
 }
 
 .app {
@@ -35,18 +35,17 @@ path.link {
   display: -webkit-flex;
   display: -ms-flex;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 100%;
   width: 50%;
 }
 
 .left-container {
-  flex-direction: column;
-  align-items: center;
   background-color: #dbe2ef;
 }
 
 .right-container {
-  align-items: center;
   justify-content: center;
   background-color: #112d4e;
 }
@@ -75,4 +74,24 @@ path.link {
   width: 100%;
   text-align: center;
   padding: 5% 0;
+}
+
+.dropdown {
+  width: 100%;
+  height: 30%;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.traversal-info {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+  width: 100%;
 }
